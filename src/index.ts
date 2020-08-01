@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 import { QuestionsRepository } from './repositories/Implementations/QuestionsRepository'
 import { QuestionAskerUseCase } from './UseCases/QuestionAsker/QuestionAskerUseCase'
 import { QuestionAskerController } from './UseCases/QuestionAsker/QuestionAskerController'

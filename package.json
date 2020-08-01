@@ -1,21 +1,23 @@
 {
-  "name": "hati",
-  "version": "1.0.0",
-  "description": "An interactive CLI to help you generate node API's",
-  "main": "lib/index.js",
-  "types": "lib",
-  "scripts": {
-	"build": "tsc -p .",
-	"dev": "ts-node-dev src/index.ts"
-  },
-  "dependencies": {
-    "@types/inquirer": "^7.3.0",
-    "inquirer": "^7.3.3"
-  },
-  "devDependencies": {
-    "ts-node-dev": "^1.0.0-pre.56",
-    "typescript": "^3.9.7"
-  },
-  "author": "wllfaria",
-  "license": "MIT"
+	"name": "hati",
+	"version": "1.0.1",
+	"description": "An interactive CLI to help you generate node API's",
+	"main": "lib/index.js",
+	"bin": "lib/index.js",
+	"types": "lib",
+	"scripts": {
+		"build": "tsc -p .",
+		"dev": "ts-node-dev src/index.ts"
+	},
+	"keywords": [],
+	"author": "wllfaria",
+	"license": "MIT",
+	"dependencies": {
+		"@types/inquirer": "^7.3.0",
+		"inquirer": "^7.3.3"
+	},
+	"devDependencies": {
+		"ts-node-dev": "^1.0.0-pre.56",
+		"typescript": "^3.9.7"
+	}
 }
