@@ -3,6 +3,8 @@ import { QuestionsRepository } from './repositories/Implementations/QuestionsRep
 import { QuestionAskerUseCase } from './UseCases/QuestionAsker/QuestionAskerUseCase'
 import { QuestionAskerController } from './UseCases/QuestionAsker/QuestionAskerController'
 import { IAnswers } from './UseCases/QuestionAsker/QuestionAskerDTO'
+import { CreateAppUseCase } from './UseCases/CreateApp/CreateAppUseCase'
+import { CreateAppController } from './UseCases/CreateApp/CreateAppController'
 
 class Hati {
 	private answers!: IAnswers
@@ -23,7 +25,11 @@ class Hati {
 		this.answers = await questionAskerController.handle()
 	}
 
-	private async handleAppCreation(answers: IAnswers): Promise<void> {}
+	private async handleAppCreation(answers: IAnswers): Promise<void> {
+		const createAppUseCase = new CreateAppUseCase()
+		const createAppController = new CreateAppController(createAppUseCase)
+		createAppController.handle(answers)
+	}
 }
 
 new Hati()

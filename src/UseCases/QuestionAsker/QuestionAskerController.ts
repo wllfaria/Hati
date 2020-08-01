@@ -8,9 +8,9 @@ export class QuestionAskerController {
 		private questionsRepository: IQuestionsRepository
 	) {}
 
-	public async handle() {
+	public async handle(): Promise<IAnswers> {
 		const totalQuestions = this.questionsRepository.getTotalQuestions()
-		let answers: IAnswers = {}
+		let answers = {}
 		for (let i = 0; i < totalQuestions; i++) {
 			const question = this.questionsRepository.getQuestion(i)
 			const answer = await this.questionAskerUseCase.askQuestion(question)
@@ -19,6 +19,6 @@ export class QuestionAskerController {
 				...answer
 			}
 		}
-		return answers
+		return answers as IAnswers
 	}
 }
