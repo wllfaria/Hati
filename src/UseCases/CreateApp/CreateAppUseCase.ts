@@ -2,7 +2,7 @@ import { IAnswers } from '../QuestionAsker/QuestionAskerDTO'
 import fs from 'fs'
 import path from 'path'
 import chalk from 'chalk'
-import ncp from 'ncp'
+import axios from 'axios'
 
 export class CreateAppUseCase {
 	private cwd: string = process.cwd()
@@ -18,7 +18,7 @@ export class CreateAppUseCase {
 			.split(' ')
 			.map((str: string): string => `${str}-`)
 			.join('')
-		this.pathToTemplate = `./templates/${typescript}/${pattern}/${orm}template`
+		this.pathToTemplate = `templates/${typescript}/${pattern}/${orm}template`
 	}
 
 	public createTemplate(projectName: string): void {
@@ -55,10 +55,15 @@ export class CreateAppUseCase {
 		}
 	}
 
-	private copyTemplateToProjectDirectory(): void {
-		ncp(this.pathToTemplate, this.pathToProject, (err: Error[] | null) =>
-			err ? this.creatingProjectError() : this.projectCreatedSuccessfully()
-		)
+	private async copyTemplateToProjectDirectory(): Promise<void> {
+		try {
+			const response = await axios.get(
+				`https://api.github.com/repos/wllfaria/Hati/contents/${this.pathToTemplate}`
+			)
+			this.recursiveDownloadTemplateFromGithub()
+		} catch (e) {
+			this.creatingProjectError()
+		}
 	}
 
 	private removeCreatedProjectDirectory(): void {
@@ -76,6 +81,8 @@ export class CreateAppUseCase {
 		this.removeCreatedProjectDirectory()
 		process.exit()
 	}
+
+	private recursiveDownloadTemplateFromGithub() {}
 
 	private projectCreatedSuccessfully(): void {
 		console.log(chalk.green.bold('All done!'))
