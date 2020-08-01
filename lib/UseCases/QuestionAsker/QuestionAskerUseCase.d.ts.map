@@ -1,0 +1,1 @@
+{"version":3,"file":"QuestionAskerUseCase.d.ts","sourceRoot":"","sources":["../../../src/UseCases/QuestionAsker/QuestionAskerUseCase.ts"],"names":[],"mappings":"AAAA,OAAO,QAAQ,MAAM,UAAU,CAAA;AAC/B,OAAO,EAAE,QAAQ,EAAE,MAAM,yBAAyB,CAAA;AAElD,qBAAa,oBAAoB;IACnB,WAAW,CAAC,QAAQ,EAAE,QAAQ;CAI3C"}

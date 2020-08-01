@@ -1,0 +1,1 @@
+{"version":3,"file":"IQuestionsRepository.d.ts","sourceRoot":"","sources":["../../src/repositories/IQuestionsRepository.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,QAAQ,EAAE,MAAM,sBAAsB,CAAA;AAE/C,MAAM,WAAW,oBAAoB;IACpC,WAAW,EAAE,CAAC,aAAa,EAAE,MAAM,KAAK,QAAQ,CAAA;IAChD,YAAY,EAAE,MAAM,IAAI,CAAA;IACxB,iBAAiB,EAAE,MAAM,MAAM,CAAA;CAC/B"}
