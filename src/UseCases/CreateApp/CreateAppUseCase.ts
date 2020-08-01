@@ -3,12 +3,14 @@ import fs from 'fs'
 import path from 'path'
 import chalk from 'chalk'
 import axios from 'axios'
+import admzip from 'adm-zip'
 
 export class CreateAppUseCase {
 	private cwd: string = process.cwd()
 	private pathToTemplate!: string
 	private pathToProject!: string
 	private projectName!: string
+	private githubUrl: string = 'https://api.github.com/repos/wllfaria/Hati/contents/'
 
 	public getPathToTemplate(answers: IAnswers): void {
 		const pattern = answers.pattern.split(' ')[0]
@@ -57,10 +59,9 @@ export class CreateAppUseCase {
 
 	private async copyTemplateToProjectDirectory(): Promise<void> {
 		try {
-			const response = await axios.get(
-				`https://api.github.com/repos/wllfaria/Hati/contents/${this.pathToTemplate}`
-			)
-			this.recursiveDownloadTemplateFromGithub()
+			const response = await axios.get(`${this.githubUrl}${this.pathToTemplate}`)
+			const file = response.data.find((content: any) => content.name === 'template.zip')
+			console.log(file)
 		} catch (e) {
 			this.creatingProjectError()
 		}
@@ -81,8 +82,6 @@ export class CreateAppUseCase {
 		this.removeCreatedProjectDirectory()
 		process.exit()
 	}
-
-	private recursiveDownloadTemplateFromGithub() {}
 
 	private projectCreatedSuccessfully(): void {
 		console.log(chalk.green.bold('All done!'))
