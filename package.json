@@ -1,6 +1,6 @@
 {
 	"name": "hati",
-	"version": "1.0.6",
+	"version": "1.0.9",
 	"description": "An interactive CLI to help you generate node API's",
 	"main": "lib/index.js",
 	"bin": "lib/index.js",
@@ -9,9 +9,19 @@
 		"build": "tsc -p .",
 		"dev": "ts-node-dev src/index.ts"
 	},
-	"keywords": [],
-	"author": "wllfaria",
+	"keywords": [
+		"nodejs",
+		"node",
+		"express",
+		"api",
+		"hati"
+	],
+	"author": "Willians Faria <dev.willians.faria@gmail.com>",
 	"license": "MIT",
+	"repository": {
+		"url": "https://github.com/wllfaria/Hati",
+		"type": "git"
+	},
 	"dependencies": {
 		"adm-zip": "^0.4.16",
 		"axios": "^0.19.2",
