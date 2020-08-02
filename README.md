@@ -1,21 +1,47 @@
-# Pyxis
+# Hati
 
 An interactive CLI to help you generate node API's
 
-## Usage
+## Table of Contents
 
+1. [Documentation](#documentation)
+	1. [Usage](#usage)
+	2. [Example](#example)
+2. [Templates](#templates)
+3. [License](#license)
+
+## [Documentation](#documentation)
+
+<a name="documentation"></a>
+
+### Usage
+
+<a name="usage"></a>
+
+We encourage you to use `npx` to run the command line, but all the following examples will work.
+
+```bash
+	$ npx hati
+
+	# using npm
+	$ npm i -g hati
+
+	# using yarn
+	$ yarn global add hati
 ```
-Pyxis
-```
 
-### Todos
+### Example
 
--   [x] Ask the name of the project \* Please give a name to your project
--   [x] Ask which pattern the user wants to use
-        _ Please select a pattern:
-        _ MC (Model Controller)
-        _ PBF (Package by Feature) _
--   [x] Ask whether the user want to use Typescript or Javascript \* Would you like to use Typescript?
--   [x] Ask if the user wants to add a ORM
-        _ Should I add a ORM?
-        _ Sequelize \* No Database
+<a name="example"></a>
+
+here is a sample demonstration of the CLI running using `npx hati`
+
+![sample gif of the CLI running](./assets/gif/readme-example.gif)
+
+## Templates
+
+You can find all the available templates [here](https://github.com/wllfaria/Hati/tree/master/templates).
+
+## License
+
+Copyright (c) 2020 Willians Faria (twitter: [@wllfaria_](https://twitter.com/wllfaria_)) Licensed under the MIT license.

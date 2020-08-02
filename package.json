@@ -1,6 +1,6 @@
 {
 	"name": "hati",
-	"version": "1.0.9",
+	"version": "1.0.8",
 	"description": "An interactive CLI to help you generate node API's",
 	"main": "lib/index.js",
 	"bin": "lib/index.js",
@@ -22,6 +22,8 @@
 		"url": "https://github.com/wllfaria/Hati",
 		"type": "git"
 	},
+	"homepage": "https://github.com/wllfaria/Hati",
+	"bugs": "https://github.com/wllfaria/Hati/issues",
 	"dependencies": {
 		"adm-zip": "^0.4.16",
 		"axios": "^0.19.2",
