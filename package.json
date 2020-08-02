@@ -1,6 +1,6 @@
 {
 	"name": "hati",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"description": "An interactive CLI to help you generate node API's",
 	"main": "lib/index.js",
 	"bin": "lib/index.js",
@@ -16,12 +16,14 @@
 		"adm-zip": "^0.4.16",
 		"axios": "^0.19.2",
 		"chalk": "^4.1.0",
-		"inquirer": "^7.3.3"
+		"inquirer": "^7.3.3",
+		"superagent": "^5.3.1"
 	},
 	"devDependencies": {
 		"@types/adm-zip": "^0.4.33",
 		"@types/inquirer": "^7.3.0",
 		"@types/node": "^14.0.27",
+		"@types/superagent": "^4.1.8",
 		"ts-node-dev": "^1.0.0-pre.56",
 		"typescript": "^3.9.7"
 	}

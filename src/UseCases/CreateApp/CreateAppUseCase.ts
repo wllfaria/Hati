@@ -3,13 +3,15 @@ import fs from 'fs'
 import path from 'path'
 import chalk from 'chalk'
 import axios from 'axios'
-import admzip from 'adm-zip'
+import superagent from 'superagent'
+import AdmZip from 'adm-zip'
 
 export class CreateAppUseCase {
 	private cwd: string = process.cwd()
 	private pathToTemplate!: string
 	private pathToProject!: string
 	private projectName!: string
+	private templatePath!: string
 	private githubUrl: string = 'https://api.github.com/repos/wllfaria/Hati/contents/'
 
 	public getPathToTemplate(answers: IAnswers): void {
@@ -32,6 +34,7 @@ export class CreateAppUseCase {
 
 	private checkIfProjectDirectoryExists(): void {
 		this.pathToProject = path.join(this.cwd, this.projectName)
+		this.templatePath = path.join(this.pathToProject, 'template.zip')
 		const folderExists = fs.existsSync(this.pathToProject)
 		if (folderExists) {
 			console.log()
@@ -61,7 +64,29 @@ export class CreateAppUseCase {
 		try {
 			const response = await axios.get(`${this.githubUrl}${this.pathToTemplate}`)
 			const file = response.data.find((content: any) => content.name === 'template.zip')
-			console.log(file)
+			superagent
+				.get(file.download_url)
+				.on('error', () => this.creatingProjectError())
+				.pipe(fs.createWriteStream(this.templatePath))
+				.on('finish', () => this.unzipFiles())
+		} catch (e) {
+			console.log(e)
+			this.creatingProjectError()
+		}
+	}
+
+	private unzipFiles(): void {
+		const zipFile = new AdmZip(this.templatePath)
+		zipFile
+			.getEntries()
+			.map((zipEntry) => zipFile.extractEntryTo(zipEntry.entryName, this.pathToProject, true, true))
+		this.removeZipFile()
+	}
+
+	private removeZipFile(): void {
+		try {
+			fs.unlinkSync(this.templatePath)
+			this.projectCreatedSuccessfully()
 		} catch (e) {
 			this.creatingProjectError()
 		}
