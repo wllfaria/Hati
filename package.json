@@ -9,8 +9,8 @@
 		"build": "tsc -p .",
 		"dev": "ts-node-dev src/index.ts",
 		"test": "jest",
-		"lint": "eslint --ext ts",
-		"coveralls": "cat ./coverage/lcov.info | coveralls"
+		"coveralls": "cat ./coverage/lcov.info | coveralls",
+		"lint": "eslint --ext ts"
 	},
 	"keywords": [
 		"nodejs",
