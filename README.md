@@ -1,12 +1,14 @@
 # Hati
 
+[![Coverage Status](https://coveralls.io/repos/github/wllfaria/Hati/badge.svg?branch=master)](https://coveralls.io/github/wllfaria/Hati?branch=master)
+
 An interactive CLI to help you generate node API's
 
 ## Table of Contents
 
 1. [Documentation](#documentation)
-	1. [Usage](#usage)
-	2. [Example](#example)
+    1. [Usage](#usage)
+    2. [Example](#example)
 2. [Templates](#templates)
 3. [License](#license)
 
@@ -44,4 +46,4 @@ You can find all the available templates [here](https://github.com/wllfaria/Hati
 
 ## License
 
-Copyright (c) 2020 Willians Faria (twitter: [@wllfaria_](https://twitter.com/wllfaria_)) Licensed under the MIT license.
+Copyright (c) 2020 Willians Faria (twitter: [@wllfaria\_](https://twitter.com/wllfaria_)) Licensed under the MIT license.
