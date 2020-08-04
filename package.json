@@ -7,7 +7,10 @@
 	"types": "lib",
 	"scripts": {
 		"build": "tsc -p .",
-		"dev": "ts-node-dev src/index.ts"
+		"dev": "ts-node-dev src/index.ts",
+		"test": "jest",
+		"coveralls": "cat ./coverage/lcov.info | coveralls",
+		"lint": "eslint --ext ts"
 	},
 	"keywords": [
 		"nodejs",
@@ -34,8 +37,23 @@
 	"devDependencies": {
 		"@types/adm-zip": "^0.4.33",
 		"@types/inquirer": "^7.3.0",
+		"@types/jest": "^26.0.8",
 		"@types/node": "^14.0.27",
 		"@types/superagent": "^4.1.8",
+		"@typescript-eslint/eslint-plugin": "^3.8.0",
+		"@typescript-eslint/parser": "^3.8.0",
+		"coveralls": "^3.1.0",
+		"eslint": "^7.6.0",
+		"eslint-config-airbnb": "^18.2.0",
+		"eslint-config-prettier": "^6.11.0",
+		"eslint-import-resolver-typescript": "^2.2.0",
+		"eslint-plugin-import": "^2.22.0",
+		"eslint-plugin-import-helpers": "^1.1.0",
+		"eslint-plugin-jest": "^23.20.0",
+		"eslint-plugin-prettier": "^3.1.4",
+		"husky": "^4.2.5",
+		"jest": "^26.2.2",
+		"ts-jest": "^26.1.4",
 		"ts-node-dev": "^1.0.0-pre.56",
 		"typescript": "^3.9.7"
 	}
