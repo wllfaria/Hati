@@ -7,28 +7,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-	env:
-	  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-	- name: Check repository
+    - name: Checkout repository
       uses: actions/checkout@v2
-	  with:
-	  	fetch-depth: 0
+      with:
+        fetch-depth: 0
 
-    - name: Install Node.js
+    - name: Set up Node
       uses: actions/setup-node@v1
       with:
         node-version: 12
 
-	- name: Install dependencies
+    - name: Install dependencies
       run: yarn
 
-	- name: Checking tests
-      run: yarn test
+    - name: Checking tests
+      run: yarn test --coverage
 
-	- name: Checking linting
-	  run: yarn lint
+    - name: Checking linting
+      run: yarn lint
 
-	- name: Checking commit message
-	  uses: wagoid/commitlint-github-action@v1
+    - name: Checking commit message
+      uses: wagoid/commitlint-github-action@v1
