@@ -33,7 +33,7 @@ jobs:
     - name: Checking commit message
       uses: wagoid/commitlint-github-action@v1
 
-	- name: Coveralls
+    - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
