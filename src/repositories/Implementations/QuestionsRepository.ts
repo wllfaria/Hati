@@ -1,6 +1,7 @@
 import { IQuestionsRepository } from '../IQuestionsRepository'
-import inquirer, { ChoiceBase, ChoiceCollection, DistinctChoice } from 'inquirer'
+import inquirer from 'inquirer'
 import { Question } from '../../entities/Question'
+import { TQuestion } from '../../entities/QuestionDTO'
 
 export class QuestionsRepository implements IQuestionsRepository {
 	private questions: Question[] = []
@@ -11,6 +12,10 @@ export class QuestionsRepository implements IQuestionsRepository {
 
 	public getQuestion(questionIndex: number): Question {
 		return this.questions[questionIndex]
+	}
+
+	public get getQuestions() {
+		return this.questions
 	}
 
 	public addQuestions(): void {
@@ -24,7 +29,7 @@ export class QuestionsRepository implements IQuestionsRepository {
 		return this.questions.length
 	}
 
-	private get question1(): inquirer.Question {
+	private get question1(): TQuestion {
 		return {
 			type: 'input',
 			name: 'projectName',
@@ -36,7 +41,7 @@ export class QuestionsRepository implements IQuestionsRepository {
 		}
 	}
 
-	private get question2(): inquirer.DistinctQuestion {
+	private get question2(): TQuestion {
 		return {
 			type: 'list',
 			name: 'pattern',
@@ -45,7 +50,7 @@ export class QuestionsRepository implements IQuestionsRepository {
 		}
 	}
 
-	private get question3(): inquirer.Question {
+	private get question3(): TQuestion {
 		return {
 			type: 'confirm',
 			name: 'typescript',
@@ -53,7 +58,7 @@ export class QuestionsRepository implements IQuestionsRepository {
 		}
 	}
 
-	private get question4(): inquirer.DistinctQuestion {
+	private get question4(): TQuestion {
 		return {
 			type: 'list',
 			name: 'database',

@@ -1,17 +1,22 @@
 import inquirer from 'inquirer'
+import { TQuestion } from './QuestionDTO'
 
 export class Question implements inquirer.Question {
 	public readonly type: inquirer.QuestionTypeName
-	public readonly name: string | undefined
-	public readonly message: string | undefined
-	public readonly validate: inquirer.Validator
-	public readonly choices?: inquirer.ChoiceCollection
+	public readonly name: string
+	public readonly message: string
+	public readonly validate?: inquirer.Validator
+	public readonly choices?: string[]
 
-	constructor(props: inquirer.Question) {
-		Object.assign(this, props)
+	constructor(props: TQuestion) {
+		this.type = props.type
+		this.name = props.name
+		this.message = props.message
+		this.validate = props.validate
+		this.choices = props.choices
 	}
 
-	public composeQuestion(): inquirer.DistinctQuestion {
+	public composeQuestion(): TQuestion {
 		return {
 			type: this.type,
 			name: this.name,
