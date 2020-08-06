@@ -16,16 +16,25 @@ describe('QuestionsRepository', () => {
 		expect(question).toBeDefined()
 		expect(question).toBeInstanceOf(Question)
 	})
-	test('Expect addQuestions to be a function', () => {
+	test('Expect getQuestions to return an array', () => {
 		const questionsRepository = new QuestionsRepository()
-		expect(questionsRepository.addQuestions).toBeInstanceOf(Function)
+		expect(questionsRepository.getQuestions).toBeInstanceOf(Array)
 	})
 	test('Expect questions array to be filled with questions when questionsRepository is instantiated', () => {
 		const questionsRepository = new QuestionsRepository()
 		expect(questionsRepository.getQuestions.length).toBeGreaterThan(0)
 	})
-	test('Expect getQuestions to return an empty array', () => {
+	test('Expect addQuestions to be a function', () => {
 		const questionsRepository = new QuestionsRepository()
-		expect(questionsRepository.getQuestions).toBeInstanceOf(Array)
+		expect(questionsRepository.addQuestions).toBeInstanceOf(Function)
+	})
+	test('Expect getTotalQuestions to be a function', () => {
+		const questionsRepository = new QuestionsRepository()
+		expect(questionsRepository.getTotalQuestions).toBeInstanceOf(Function)
+	})
+	test('Expect getTotalQuestions to return a number', () => {
+		const questionsRepository = new QuestionsRepository()
+		const totalQuestions = questionsRepository.getTotalQuestions()
+		expect(totalQuestions).toBeGreaterThanOrEqual(0)
 	})
 })
