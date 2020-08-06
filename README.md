@@ -1,6 +1,7 @@
 # Hati
 
 [![Coverage Status](https://coveralls.io/repos/github/wllfaria/Hati/badge.svg?branch=master)](https://coveralls.io/github/wllfaria/Hati?branch=master)
+![ci](https://github.com/wllfaria/Hati/workflows/ci/badge.svg?branch=master)
 
 An interactive CLI to help you generate node API's
 
