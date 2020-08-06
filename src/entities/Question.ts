@@ -1,22 +1,22 @@
 import inquirer from 'inquirer'
-import { TQuestion } from './QuestionDTO'
+import { IQuestion } from './QuestionDTO'
 
 export class Question implements inquirer.Question {
 	public readonly type: inquirer.QuestionTypeName
 	public readonly name: string
 	public readonly message: string
-	public readonly validate?: inquirer.Validator
-	public readonly choices?: string[]
+	public validate: (value: string) => boolean | string
+	public readonly choices: string[]
 
-	constructor(props: TQuestion) {
+	constructor(props: IQuestion) {
 		this.type = props.type
 		this.name = props.name
 		this.message = props.message
 		this.validate = props.validate
-		this.choices = props.choices
+		this.choices = props.choices!
 	}
 
-	public composeQuestion(): TQuestion {
+	public composeQuestion(): IQuestion {
 		return {
 			type: this.type,
 			name: this.name,

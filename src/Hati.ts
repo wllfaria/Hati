@@ -8,11 +8,7 @@ import { CreateAppController } from './UseCases/CreateApp/CreateAppController'
 export class Hati {
 	private answers!: IAnswers
 
-	constructor() {
-		this.initialize()
-	}
-
-	private async initialize(): Promise<void> {
+	public async initialize(): Promise<void> {
 		await this.handleQuestions()
 		await this.handleAppCreation(this.answers)
 	}

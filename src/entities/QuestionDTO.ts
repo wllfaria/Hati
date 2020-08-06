@@ -1,9 +1,9 @@
 import inquirer from 'inquirer'
 
-export type TQuestion = {
+export interface IQuestion {
 	type: inquirer.QuestionTypeName
 	name: string
 	message: string
-	validate?: inquirer.Validator
 	choices?: string[]
+	validate: (value: string) => boolean | string
 }

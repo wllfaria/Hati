@@ -1,6 +1,6 @@
 import factory from 'factory-girl'
 import faker from 'faker'
-import { Question } from '../Question'
+import { Question } from '../src/entities/Question'
 
 factory.define('Question', Question, {
 	type: 'input',

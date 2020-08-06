@@ -2,4 +2,4 @@
 
 import { Hati } from './Hati'
 
-new Hati()
+new Hati().initialize()
