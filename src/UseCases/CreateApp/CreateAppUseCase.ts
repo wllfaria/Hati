@@ -44,6 +44,7 @@ export class CreateAppUseCase {
 		try {
 			console.log(this.githubUrl + templatePath)
 			const response = await axios.get(`${this.githubUrl}${templatePath}`)
+			console.log(response)
 			const file = response.data.find((content: any): boolean => content.name === this.templateName)
 			superagent
 				.get(file.download_url)
