@@ -1,17 +1,16 @@
 import { IAnswers } from '../QuestionAsker/QuestionAskerDTO'
-import fs from 'fs'
 import path from 'path'
-import chalk from 'chalk'
 import axios from 'axios'
 import superagent from 'superagent'
 import AdmZip from 'adm-zip'
 import { IMessagesRepository } from '../../repositories/IMessagesRepository'
+import { IFileManagerRepository } from '../../repositories/IFileManagerRepository'
 
 export class CreateAppUseCase {
 	private templateName: string = 'template.zip'
 	private githubUrl: string = 'https://api.github.com/repos/wllfaria/Hati/contents/'
 
-	constructor(private messagesRepository: IMessagesRepository) {}
+	constructor(private messagesRepository: IMessagesRepository, private fileManager: IFileManagerRepository) {}
 
 	public getPathToTemplate(answers: IAnswers): string {
 		const pattern = this.formatPattern(answers.pattern)
@@ -22,18 +21,14 @@ export class CreateAppUseCase {
 
 	public checkIfProjectDirectoryExists(projectName: string): string {
 		const projectPath = path.join(process.cwd(), projectName)
-		const templatePath = path.join(projectPath, this.templateName)
-		const folderExists = fs.existsSync(projectPath)
-		if (folderExists) {
-			this.messagesRepository.directoryAlreadyExists(projectName)
-			process.exit()
-		}
+		const folderExists = this.fileManager.directoryExists(projectPath)
+		if (folderExists) this.directoryAlreadyExists(projectName)
 		return projectPath
 	}
 
 	public createProjectDirectory(projectName: string, pathToProject: string): void {
 		this.messagesRepository.noDirectoryConflictFound(projectName)
-		fs.mkdirSync(pathToProject)
+		this.fileManager.createDirectory(pathToProject)
 	}
 
 	public async copyTemplateToProjectDirectory(
@@ -42,18 +37,22 @@ export class CreateAppUseCase {
 		projectName: string
 	): Promise<void> {
 		try {
-			console.log(this.githubUrl + templatePath)
 			const response = await axios.get(`${this.githubUrl}${templatePath}`)
-			console.log(response)
 			const file = response.data.find((content: any): boolean => content.name === this.templateName)
+			const zipfilePath = path.join(projectPath, this.templateName)
 			superagent
 				.get(file.download_url)
 				.on('error', () => this.creatingProjectError(projectPath))
-				.pipe(fs.createWriteStream(templatePath))
-				.on('finish', () => this.unzipFiles(templatePath, projectPath, projectName))
+				.pipe(this.fileManager.writeFileStream(zipfilePath))
+				.on('finish', () => this.unzipFiles(zipfilePath, projectPath, projectName))
 		} catch (e) {
 			this.creatingProjectError(projectPath)
 		}
+	}
+
+	private directoryAlreadyExists(projectName: string): void {
+		this.messagesRepository.directoryAlreadyExists(projectName)
+		this.exitProcess()
 	}
 
 	private formatPattern(pattern: string): string {
@@ -74,24 +73,28 @@ export class CreateAppUseCase {
 			.join('')
 	}
 
-	private unzipFiles(templatePath: string, projectPath: string, projectName: string): void {
-		const zipFile = new AdmZip(templatePath)
+	private unzipFiles(zipfilePath: string, projectPath: string, projectName: string): void {
+		const zipFile = new AdmZip(zipfilePath)
 		zipFile.getEntries().map((zipEntry) => zipFile.extractEntryTo(zipEntry.entryName, projectPath, true, true))
-		this.removeZipFile(templatePath, projectName)
+		this.removeZipFile(zipfilePath, projectName)
 	}
 
 	private removeZipFile(templatePath: string, projectName: string): void {
-		fs.unlinkSync(templatePath)
+		this.fileManager.removeFile(templatePath)
 		this.messagesRepository.projectCreated(projectName)
 	}
 
 	private creatingProjectError(projectPath: string): void {
 		this.messagesRepository.creatingProjectError()
 		this.removeCreatedProjectDirectory(projectPath)
-		process.exit()
+		this.exitProcess()
 	}
 
 	private removeCreatedProjectDirectory(projectPath: string): void {
-		fs.rmdirSync(projectPath)
+		this.fileManager.removeDirectory(projectPath)
+	}
+
+	private exitProcess(): void {
+		process.exit()
 	}
 }
