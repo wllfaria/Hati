@@ -4,6 +4,7 @@ import { QuestionAskerController } from './UseCases/QuestionAsker/QuestionAskerC
 import { IAnswers } from './UseCases/QuestionAsker/QuestionAskerDTO'
 import { CreateAppUseCase } from './UseCases/CreateApp/CreateAppUseCase'
 import { CreateAppController } from './UseCases/CreateApp/CreateAppController'
+import { MessagesRepository } from './repositories/Implementations/MessagesRepository'
 
 export class Hati {
 	private answers!: IAnswers
@@ -21,7 +22,8 @@ export class Hati {
 	}
 
 	private async handleAppCreation(answers: IAnswers): Promise<void> {
-		const createAppUseCase = new CreateAppUseCase()
+		const messagesRepository = new MessagesRepository()
+		const createAppUseCase = new CreateAppUseCase(messagesRepository)
 		const createAppController = new CreateAppController(createAppUseCase)
 		createAppController.handle(answers)
 	}

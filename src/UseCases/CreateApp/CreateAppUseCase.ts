@@ -5,120 +5,92 @@ import chalk from 'chalk'
 import axios from 'axios'
 import superagent from 'superagent'
 import AdmZip from 'adm-zip'
+import { IMessagesRepository } from '../../repositories/IMessagesRepository'
 
 export class CreateAppUseCase {
-	private cwd: string = process.cwd()
-	private pathToTemplate!: string
-	private pathToProject!: string
-	private projectName!: string
-	private templatePath!: string
+	private templateName: string = 'template.zip'
 	private githubUrl: string = 'https://api.github.com/repos/wllfaria/Hati/contents/'
 
-	public getPathToTemplate(answers: IAnswers): void {
-		const pattern = answers.pattern.split(' ')[0]
-		const typescript = answers.typescript ? 'typescript' : 'javascript'
-		const orm = answers.database
+	constructor(private messagesRepository: IMessagesRepository) {}
+
+	public getPathToTemplate(answers: IAnswers): string {
+		const pattern = this.formatPattern(answers.pattern)
+		const typescript = this.formatUseTypescript(answers.typescript)
+		const orm = this.formatOrm(answers.database)
+		return `templates/${typescript}/${pattern}/${orm}template`
+	}
+
+	public checkIfProjectDirectoryExists(projectName: string): string {
+		const projectPath = path.join(process.cwd(), projectName)
+		const templatePath = path.join(projectPath, this.templateName)
+		const folderExists = fs.existsSync(projectPath)
+		if (folderExists) {
+			this.messagesRepository.directoryAlreadyExists(projectName)
+			process.exit()
+		}
+		return projectPath
+	}
+
+	public createProjectDirectory(projectName: string, pathToProject: string): void {
+		this.messagesRepository.noDirectoryConflictFound(projectName)
+		fs.mkdirSync(pathToProject)
+	}
+
+	public async copyTemplateToProjectDirectory(
+		templatePath: string,
+		projectPath: string,
+		projectName: string
+	): Promise<void> {
+		try {
+			console.log(this.githubUrl + templatePath)
+			const response = await axios.get(`${this.githubUrl}${templatePath}`)
+			const file = response.data.find((content: any): boolean => content.name === this.templateName)
+			superagent
+				.get(file.download_url)
+				.on('error', () => this.creatingProjectError(projectPath))
+				.pipe(fs.createWriteStream(templatePath))
+				.on('finish', () => this.unzipFiles(templatePath, projectPath, projectName))
+		} catch (e) {
+			this.creatingProjectError(projectPath)
+		}
+	}
+
+	private formatPattern(pattern: string): string {
+		if (!pattern) return ''
+		const patternArray = pattern.split(' ')
+		return patternArray[0]
+	}
+
+	private formatUseTypescript(useTypescript: boolean): string {
+		return useTypescript ? 'typescript' : 'javascript'
+	}
+
+	private formatOrm(databaseOrm: string): string {
+		return databaseOrm
 			.toLowerCase()
 			.split(' ')
 			.map((str: string): string => `${str}-`)
 			.join('')
-		this.pathToTemplate = `templates/${typescript}/${pattern}/${orm}template`
 	}
 
-	public createTemplate(projectName: string): void {
-		this.projectName = projectName
-		this.checkIfProjectDirectoryExists()
-		this.createProjectDirectory()
-		this.copyTemplateToProjectDirectory()
+	private unzipFiles(templatePath: string, projectPath: string, projectName: string): void {
+		const zipFile = new AdmZip(templatePath)
+		zipFile.getEntries().map((zipEntry) => zipFile.extractEntryTo(zipEntry.entryName, projectPath, true, true))
+		this.removeZipFile(templatePath, projectName)
 	}
 
-	private checkIfProjectDirectoryExists(): void {
-		this.pathToProject = path.join(this.cwd, this.projectName)
-		this.templatePath = path.join(this.pathToProject, 'template.zip')
-		const folderExists = fs.existsSync(this.pathToProject)
-		if (folderExists) {
-			console.log()
-			console.log(`The directory ${chalk.magenta.bold(this.projectName)} already exists and could conflict`)
-			console.log(`Either try using a new ${chalk.green.bold('project name')} or remove the folder listed above.`)
-			console.log()
-			process.exit()
-		}
+	private removeZipFile(templatePath: string, projectName: string): void {
+		fs.unlinkSync(templatePath)
+		this.messagesRepository.projectCreated(projectName)
 	}
 
-	private createProjectDirectory(): void {
-		console.log()
-		console.log(
-			`Found no conflicts between existing directories and project name (${chalk.green.bold(this.projectName)}).`
-		)
-		console.log()
-		console.log(chalk.magenta.bold('Starting the project creation process.'))
-		console.log()
-		try {
-			fs.mkdirSync(this.pathToProject)
-		} catch (e) {
-			console.log(e)
-		}
-	}
-
-	private async copyTemplateToProjectDirectory(): Promise<void> {
-		try {
-			const response = await axios.get(`${this.githubUrl}${this.pathToTemplate}`)
-			const file = response.data.find((content: any) => content.name === 'template.zip')
-			superagent
-				.get(file.download_url)
-				.on('error', () => this.creatingProjectError())
-				.pipe(fs.createWriteStream(this.templatePath))
-				.on('finish', () => this.unzipFiles())
-		} catch (e) {
-			console.log(e)
-			this.creatingProjectError()
-		}
-	}
-
-	private unzipFiles(): void {
-		const zipFile = new AdmZip(this.templatePath)
-		zipFile
-			.getEntries()
-			.map((zipEntry) => zipFile.extractEntryTo(zipEntry.entryName, this.pathToProject, true, true))
-		this.removeZipFile()
-	}
-
-	private removeZipFile(): void {
-		try {
-			fs.unlinkSync(this.templatePath)
-			this.projectCreatedSuccessfully()
-		} catch (e) {
-			this.creatingProjectError()
-		}
-	}
-
-	private removeCreatedProjectDirectory(): void {
-		try {
-			fs.rmdirSync(this.pathToProject)
-		} catch (e) {
-			console.log('e')
-		}
-	}
-
-	private creatingProjectError(): void {
-		console.log('An error occurred while creating your project.')
-		console.log(`Please try again and if the error persists, you can open a issue on ${chalk.red.bold('Github')}`)
-		console.log()
-		this.removeCreatedProjectDirectory()
+	private creatingProjectError(projectPath: string): void {
+		this.messagesRepository.creatingProjectError()
+		this.removeCreatedProjectDirectory(projectPath)
 		process.exit()
 	}
 
-	private projectCreatedSuccessfully(): void {
-		console.log(chalk.green.bold('All done!'))
-		console.log()
-		console.log('All you gotta do now is:')
-		console.log(chalk.magenta.bold(`cd ${this.projectName}`))
-		console.log()
-		console.log('Install the packages with:')
-		console.log(`${chalk.green.bold('npm i')} or ${chalk.green.bold('yarn')}`)
-		console.log()
-		console.log('And run your project with:')
-		console.log(`${chalk.magenta.bold('npm run dev')} or ${chalk.magenta.bold('yarn dev')}`)
-		console.log()
+	private removeCreatedProjectDirectory(projectPath: string): void {
+		fs.rmdirSync(projectPath)
 	}
 }
