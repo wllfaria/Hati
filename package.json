@@ -8,7 +8,7 @@
 	"scripts": {
 		"build": "tsc -p .",
 		"dev": "ts-node-dev src/index.ts",
-		"test": "jest --coverage --watchAll",
+		"test": "jest",
 		"coveralls": "cat ./coverage/lcov.info | coveralls",
 		"lint": "eslint --ext ts"
 	},
