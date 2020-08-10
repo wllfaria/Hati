@@ -25,7 +25,7 @@ jobs:
 
     - name: Change Directory to typescript sequelize template
       run: cd templates/typescript/PBF/sequelize-template
-      	
+
     - name: Install dependencies
       run:  yarn
 
