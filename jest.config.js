@@ -1,5 +1,6 @@
 module.exports = {
 	preset: 'ts-jest',
 	testEnvironment: 'node',
-	bail: true
+	bail: true,
+	testPathIgnorePatterns: ['\\node_modules\\', '\\templates\\']
 }
