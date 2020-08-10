@@ -22,6 +22,8 @@ jobs:
 
     - name: Install dependencies
       run: yarn
+	  run: cd templates/typescript/PBF/sequelize-template
+	  run: yarn
 
     - name: Checking tests
       run: yarn test --coverage
