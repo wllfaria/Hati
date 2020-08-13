@@ -1,20 +1,24 @@
 import { IAnswers } from '../QuestionAsker/QuestionAskerDTO';
+import { IMessagesRepository } from '../../repositories/IMessagesRepository';
+import { IFileManagerRepository } from '../../repositories/IFileManagerRepository';
 export declare class CreateAppUseCase {
-    private cwd;
-    private pathToTemplate;
-    private pathToProject;
-    private projectName;
-    private templatePath;
+    private messagesRepository;
+    private fileManager;
+    private templateName;
     private githubUrl;
-    getPathToTemplate(answers: IAnswers): void;
-    createTemplate(projectName: string): void;
-    private checkIfProjectDirectoryExists;
-    private createProjectDirectory;
-    private copyTemplateToProjectDirectory;
+    constructor(messagesRepository: IMessagesRepository, fileManager: IFileManagerRepository);
+    getPathToTemplate(answers: IAnswers): string;
+    checkIfProjectDirectoryExists(projectName: string): string;
+    createProjectDirectory(projectName: string, pathToProject: string): void;
+    copyTemplateToProjectDirectory(templatePath: string, projectPath: string, projectName: string): Promise<void>;
+    private directoryAlreadyExists;
+    private formatPattern;
+    private formatUseTypescript;
+    private formatOrm;
     private unzipFiles;
     private removeZipFile;
-    private removeCreatedProjectDirectory;
     private creatingProjectError;
-    private projectCreatedSuccessfully;
+    private removeCreatedProjectDirectory;
+    private exitProcess;
 }
 //# sourceMappingURL=CreateAppUseCase.d.ts.map

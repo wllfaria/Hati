@@ -1,0 +1,1 @@
+{"version":3,"file":"IMessagesRepository.d.ts","sourceRoot":"","sources":["../../src/repositories/IMessagesRepository.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,mBAAmB;IACnC,wBAAwB,EAAE,CAAC,WAAW,EAAE,MAAM,KAAK,IAAI,CAAA;IACvD,sBAAsB,EAAE,CAAC,WAAW,EAAE,MAAM,KAAK,IAAI,CAAA;IACrD,oBAAoB,EAAE,MAAM,IAAI,CAAA;IAChC,cAAc,EAAE,CAAC,WAAW,EAAE,MAAM,KAAK,IAAI,CAAA;CAC7C"}

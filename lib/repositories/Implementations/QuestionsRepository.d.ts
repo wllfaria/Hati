@@ -4,6 +4,7 @@ export declare class QuestionsRepository implements IQuestionsRepository {
     private questions;
     constructor();
     getQuestion(questionIndex: number): Question;
+    get getQuestions(): Question[];
     addQuestions(): void;
     getTotalQuestions(): number;
     private get question1();
