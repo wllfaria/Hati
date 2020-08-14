@@ -1,6 +1,6 @@
 {
 	"name": "hati",
-	"version": "1.0.9",
+	"version": "1.0.10",
 	"description": "An interactive CLI to help you generate node API's",
 	"main": "lib/index.js",
 	"bin": "lib/index.js",
