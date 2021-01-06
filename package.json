@@ -29,7 +29,7 @@
 	"bugs": "https://github.com/wllfaria/Hati/issues",
 	"dependencies": {
 		"adm-zip": "^0.4.16",
-		"axios": "^0.19.2",
+		"axios": "^0.21.1",
 		"chalk": "^4.1.0",
 		"inquirer": "^7.3.3",
 		"superagent": "^5.3.1"
